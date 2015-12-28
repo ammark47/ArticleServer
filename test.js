@@ -105,6 +105,7 @@ function server() {
                       "Utah Jazz", "Washington Wizards"];
 
     for(var i=0; i<teamList.length; i++){
+      console.log(i);
       var teamStream = global[eventsource[i]];
       
       var streamdata = "https://streamdata.motwin.net/http://www.faroo.com/api?q=";
