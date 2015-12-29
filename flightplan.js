@@ -1,8 +1,8 @@
 var plan = require('flightplan');
 
-var appName = 'Atlanta-Hawks';
+var appName = 'ArticleStream';
 var username = 'deploy';
-var startFile = 'index.js';
+var startFile = 'cargotry.js';
 
 var tmpDir = appName+'-' + new Date().getTime();
 

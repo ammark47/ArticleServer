@@ -4,7 +4,7 @@ var Firebase = require('firebase');
 
 var Step = require('step');
 var async = require('async');
-var RateLimiter = require('limiter').RateLimiter;
+
 var myFirebaseRef = new Firebase('https://shining-inferno-1085.firebaseio.com/');
 var teamName = null;
 var eventSource = null;
@@ -17,7 +17,7 @@ var streamtoken = null;
 
 
 function connectStream(TeamItem) {
-    console.log(Teamitem);
+    // console.log(TeamItem);
     streamdata = "https://streamdata.motwin.net/http://www.faroo.com/api?q=";
     streamtoken = "&start=1&length=10&l=en&src=news&f=json&key=gbnEDrs@HPpVdWyQSAjQd6OVhqY_&X-Sd-Token=NDUzOTNjN2ItNDFlNy00MzBkLThmMGQtNzM2ZWFjYTNiZDkx";
     //opens eventsource for current url
@@ -26,7 +26,7 @@ function connectStream(TeamItem) {
     TeamItem.info = new EventSource(link);
     // log opening of eventsource
     TeamItem.info.onopen = function() {
-        console.log(TeamName + " connected!");
+       // console.log(TeamName + " connected!");
     };
     // add event listener for current url
     TeamItem.info.addEventListener('data', function(item) {
@@ -72,14 +72,11 @@ function connect() {
     var index = 0;
    
    
-   var cargo = async.queue(function (bucket, callback) {
-        for(var i=0; i<bucket.length; i++){
-            console.log(bucket[i]);
-          setTimeout(
-         connectStream(bucket[i])
-            , 1000);
-        }
-       callback();
+   var cargo = async.queue(function (task, callback) { 
+        setTimeout(
+            connectStream(task)
+            , 50000);
+        callback();
      }, 1);
 
 
@@ -88,7 +85,9 @@ function connect() {
         cargo.push(TeamList[j], function (err) {  
             
      });
+
 }
+
 
 
 }
