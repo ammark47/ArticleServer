@@ -1,9 +1,10 @@
 var EventSource = require('eventsource');
 var JsonPatch = require('fast-json-patch');
 var Firebase = require('firebase');
-
-var Step = require('step');
+var await = require('asyncawait/await');
 var async = require('async');
+var RateLimiter = require('limiter').RateLimiter;
+var limiter = new RateLimiter(1, 10000);
 
 var myFirebaseRef = new Firebase('https://shining-inferno-1085.firebaseio.com/');
 var teamName = null;
@@ -16,7 +17,7 @@ var streamtoken = null;
 
 
 
-function connectStream(TeamItem) {
+function connectStream(TeamItem, callback) {
     // console.log(TeamItem);
     streamdata = "https://streamdata.motwin.net/http://www.faroo.com/api?q=";
     streamtoken = "&start=1&length=10&l=en&src=news&f=json&key=gbnEDrs@HPpVdWyQSAjQd6OVhqY_&X-Sd-Token=NDUzOTNjN2ItNDFlNy00MzBkLThmMGQtNzM2ZWFjYTNiZDkx";
@@ -54,11 +55,15 @@ function connectStream(TeamItem) {
         console.log(e.data);
         TeamItem.info.close();
     });
+    
 }
+
 function pauseConnect(team){
-    setTimeout(function(team){
-         connectStream(team); 
-       }, (5000 * i));
+    setTimeout(function(){
+        connectStream(team);
+        callback();
+       }, (1000));
+   // await(connectStream(team));
 }
 
 function connect() {
@@ -72,25 +77,55 @@ function connect() {
     var index = 0;
    
    
-   var cargo = async.queue(function (task, callback) { 
-        setTimeout(
-            connectStream(task)
-            , 50000);
-        callback();
-     }, 1);
+   // var cargo = async.queue(function (task, callback) { 
+   //      setTimeout(
+   //          connectStream(task, callback)
+   //          , 5000);
+        
+   //   }, 1);
 
 
-    for(var j = 0; j < TeamList.length; j++) {
 
-        cargo.push(TeamList[j], function (err) {  
+   //  for(var j = 0; j < TeamList.length; j++) {
+
+   //          cargo.push(TeamList[j], function (err) {  
             
-     });
+   //      });
+   
+   //  }
+
+    async.eachLimit(TeamList, 5, function(team, callback){
+        setTimeout(function(){
+        connectStream(team);
+        callback();
+       }, (5000));
+        }, function(err){
+                if(err) {console.log(err);}
+                
+    });
+
+    // for(var j=0; j < TeamList.length; j++){
+    //     limiter.removeTokens(1, function(TeamList) {
+    //             connectStream(TeamList[j]);
+    //     });
+    // }
+
+
+    // limiter.removeTokens(1, function() {
+    //   for(var i=0; i< TeamList.length; i++){
+    //         connectStream(TeamList[i]);
+    //   }
+    // });
+
+        // for(var j=0; j < TeamList.length; j++){
+
+        //     async.retry({times: 3, interval: 20000}, connectStream(TeamList[j]));
+           
+        // }
 
 }
 
 
-
-}
 
 
     
