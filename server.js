@@ -37,10 +37,7 @@ function connectStream(TeamItem, callback) {
         var myFirebaseRef = new Firebase('https://articleserver.firebaseio.com/' + TeamName);
         //set initial data with returned api data
         myFirebaseRef.set(data);
-        if(TeamName == "Washington Wizards"){
-            
-        console.log(data);
-        }
+        
     });
     //add event listener to listen for updates on current url
     TeamItem.info.addEventListener('patch', function(patch) {
@@ -52,7 +49,7 @@ function connectStream(TeamItem, callback) {
             //push update to database
             myFirebaseRef.push(item.value);
         } 
-        
+
     });
     //add listener for errors
     TeamItem.info.addEventListener('error', function(e) {
