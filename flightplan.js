@@ -2,7 +2,7 @@ var plan = require('flightplan');
 
 var appName = 'ArticleStream';
 var username = 'deploy';
-var startFile = 'cargotry.js';
+var startFile = 'server.js';
 
 var tmpDir = appName+'-' + new Date().getTime();
 
@@ -17,7 +17,7 @@ plan.target('staging', [
 
 plan.target('production', [
   {
-    host: '159.203.72.52',
+    host: '159.203.128.37',
     username: username,
     privateKey: '/Users/AmmarKarim/.ssh/id_rsa',
     agent: process.env.SSH_AUTH_SOCK

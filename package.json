@@ -2,23 +2,18 @@
   "name": "ArticleServer",
   "version": "1.0.0",
   "description": "",
-  "main": "cargotry.js",
-  "config": {
-    "unsafe-perm": true
-  },
+  "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node server.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "async": "^1.5.0",
-    "asyncawait": "^1.0.1",
     "eventsource": "^0.1.6",
     "fast-json-patch": "^0.5.4",
     "firebase": "^2.3.2",
-    "flightplan": "^0.6.8",
-    "limiter": "^1.1.0"
+    "flightplan": "^0.6.8"
   },
   "devDependencies": {
     "fly": "^0.8.4"
