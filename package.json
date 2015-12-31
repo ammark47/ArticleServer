@@ -12,10 +12,9 @@
     "async": "^1.5.0",
     "eventsource": "^0.1.6",
     "fast-json-patch": "^0.5.4",
-    "firebase": "^2.3.2",
-    "flightplan": "^0.6.8"
+    "firebase": "^2.3.2"
   },
   "devDependencies": {
-    "fly": "^0.8.4"
+    
   }
 }

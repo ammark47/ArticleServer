@@ -34,7 +34,7 @@ function connectStream(TeamItem, callback) {
         teamName = data.query;
  
         //set firebase node as the query sent to api
-        var myFirebaseRef = new Firebase('https://shining-inferno-1085.firebaseio.com/' + TeamName);
+        var myFirebaseRef = new Firebase('https://articleserver.firebaseio.com/' + TeamName);
         //set initial data with returned api data
         myFirebaseRef.set(data);
         if(TeamName == "Washington Wizards"){
@@ -44,18 +44,15 @@ function connectStream(TeamItem, callback) {
     });
     //add event listener to listen for updates on current url
     TeamItem.info.addEventListener('patch', function(patch) {
-        // var item = JSON.parse(patch.data);
-        var item = patch;
-
-
-        console.log(TeamName);
-        if (patch.data[0].path !== "/time") {
+         var item = JSON.parse(patch.data);
+         item = item[0];
+        
+        if (item.op == "add") {
+            var myFirebaseRef = new Firebase('https://articleserver.firebaseio.com/' + TeamName + "/results");
             //push update to database
-            myFirebaseRef.push(patch.data);
-        }
-        if(TeamName == "Washington Wizards"){
-           console.log(item.data);
-        }
+            myFirebaseRef.push(item.value);
+        } 
+        
     });
     //add listener for errors
     TeamItem.info.addEventListener('error', function(e) {
