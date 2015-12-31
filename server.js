@@ -10,15 +10,6 @@ var eventSource = null;
 var streamdata = null;
 var streamtoken = null;
 
-var server_port = process.env.OPENSHIFT_NODEJS_PORT || 3000;
-var server_ip_address = process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1';
- 
-server.listen(server_port, server_ip_address, function () {
-  console.log( "Listening on " + server_ip_address + ", server_port " + port );
-});
-
-
-
 
 
 function connectStream(TeamItem, callback) {
@@ -54,7 +45,10 @@ function connectStream(TeamItem, callback) {
             var myFirebaseRef = new Firebase('https://articleserver.firebaseio.com/' + TeamName + "/results");
             //push update to database
             myFirebaseRef.push(item.value);
-        } 
+        } else if (item.op == "replace" && item.path == "/time") {
+            var myFirebaseRef = new Firebase('https://articleserver.firebaseio.com/' + TeamName + item.path);
+            myFirebaseRef.set(item.value);
+        }
 
     });
     //add listener for errors

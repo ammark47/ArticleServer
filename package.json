@@ -2,10 +2,10 @@
   "name": "ArticleServer",
   "version": "1.0.0",
   "description": "",
-  "main": "server.js",
   "scripts": {
     "start": "node server.js"
   },
+  "main": "server.js",
   "author": "",
   "license": "ISC",
   "dependencies": {
@@ -13,8 +13,5 @@
     "eventsource": "^0.1.6",
     "fast-json-patch": "^0.5.4",
     "firebase": "^2.3.2"
-  },
-  "devDependencies": {
-    
   }
 }
