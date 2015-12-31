@@ -3,7 +3,8 @@ var JsonPatch = require('fast-json-patch');
 var Firebase = require('firebase');
 var async = require('async');
 var EventSource = require('eventsource');
-
+var express = require('express');
+var app = express();
 var myFirebaseRef = new Firebase('https://articleserver.firebaseio.com/');
 var teamName = null;
 var eventSource = null;
@@ -71,7 +72,13 @@ function connect() {
     
     var currentTime = null, elapsedTime = null;
     var index = 0;
-   
+
+    var server_port = process.env.OPENSHIFT_NODEJS_PORT || 8080
+    var server_ip_address = process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1'
+     
+    app.listen(server_port, server_ip_address, function () {
+      console.log( "Listening on " + server_ip_address + ", server_port " + server_port )
+    });
 
     async.eachLimit(TeamList, 5, function(team, callback){
         setTimeout(function(){
