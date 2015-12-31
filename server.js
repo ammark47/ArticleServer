@@ -4,7 +4,7 @@ var Firebase = require('firebase');
 var async = require('async');
 var EventSource = require('eventsource');
 
-var myFirebaseRef = new Firebase('https://shining-inferno-1085.firebaseio.com/');
+var myFirebaseRef = new Firebase('https://articleserver.firebaseio.com/');
 var teamName = null;
 var eventSource = null;
 var streamdata = null;
@@ -16,7 +16,7 @@ var streamtoken = null;
 
 
 function connectStream(TeamItem, callback) {
-    // console.log(TeamItem);
+   
     streamdata = "https://streamdata.motwin.net/http://www.faroo.com/api?q=";
     streamtoken = "&start=1&length=10&l=en&src=news&f=json&key=gbnEDrs@HPpVdWyQSAjQd6OVhqY_&X-Sd-Token=NDUzOTNjN2ItNDFlNy00MzBkLThmMGQtNzM2ZWFjYTNiZDkx";
     //opens eventsource for current url
@@ -25,26 +25,36 @@ function connectStream(TeamItem, callback) {
     TeamItem.info = new EventSource(link);
     // log opening of eventsource
     TeamItem.info.onopen = function() {
-       // console.log(TeamName + " connected!");
+      
     };
     // add event listener for current url
     TeamItem.info.addEventListener('data', function(item) {
         //set teamName as the query sent to api
         var data = JSON.parse(item.data);
         teamName = data.query;
-        console.log('got data from ' + TeamName);
+ 
         //set firebase node as the query sent to api
         var myFirebaseRef = new Firebase('https://shining-inferno-1085.firebaseio.com/' + TeamName);
         //set initial data with returned api data
         myFirebaseRef.set(data);
+        if(TeamName == "Washington Wizards"){
+            
+        console.log(data);
+        }
     });
     //add event listener to listen for updates on current url
     TeamItem.info.addEventListener('patch', function(patch) {
-        var item = JSON.parse(patch.data);
-        console.log("patch is " + item);
+        // var item = JSON.parse(patch.data);
+        var item = patch;
+
+
+        console.log(TeamName);
         if (patch.data[0].path !== "/time") {
             //push update to database
             myFirebaseRef.push(patch.data);
+        }
+        if(TeamName == "Washington Wizards"){
+           console.log(item.data);
         }
     });
     //add listener for errors
@@ -56,13 +66,7 @@ function connectStream(TeamItem, callback) {
     
 }
 
-function pauseConnect(team){
-    setTimeout(function(){
-        connectStream(team);
-        callback();
-       }, (1000));
-   // await(connectStream(team));
-}
+
 
 function connect() {
     
