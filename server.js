@@ -55,8 +55,7 @@ function connectStream(TeamItem, callback) {
             item.value.timeStamp = Firebase.ServerValue.TIMESTAMP;
             myFirebaseRef.push(item.value);
         } else if (item.op == "replace" && item.path == "/time") {
-            var myFirebaseRef = new Firebase('https://articleserver.firebaseio.com/' + TeamName + item.path);
-            myFirebaseRef.set(item.value);
+            console.log(item.value);
         }
 
     });
