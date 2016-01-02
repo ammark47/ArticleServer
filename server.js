@@ -88,7 +88,7 @@ function connect() {
       console.log( "Listening on " + server_ip_address + ", server_port " + server_port )
     });
 
-    async.eachLimit(TeamList, 1, function(team, callback){
+    async.eachLimit(TeamList, 5, function(team, callback){
         setTimeout(function(){
         connectStream(team);
         callback();
