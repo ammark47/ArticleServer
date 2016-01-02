@@ -31,12 +31,17 @@ function connectStream(TeamItem, callback) {
         var data = JSON.parse(item.data);
         teamName = data.query;
 
-        console.log(data);
+        
+        var teamArray = data.results;
+        for (var i = 0; i < teamArray.length; i++){
+            teamArray[i].timeStamp = Firebase.ServerValue.TIMESTAMP;
+        }
+        
  
         //set firebase node as the query sent to api
         var myFirebaseRef = new Firebase('https://articleserver.firebaseio.com/' + TeamName);
         //set initial data with returned api data
-        myFirebaseRef.set(data);
+        myFirebaseRef.set(teamArray);
         
     });
     //add event listener to listen for updates on current url
@@ -47,6 +52,7 @@ function connectStream(TeamItem, callback) {
         if (item.op == "add") {
             var myFirebaseRef = new Firebase('https://articleserver.firebaseio.com/' + TeamName + "/results");
             //push update to database
+            item.value.timeStamp = Firebase.ServerValue.TIMESTAMP;
             myFirebaseRef.push(item.value);
         } else if (item.op == "replace" && item.path == "/time") {
             var myFirebaseRef = new Firebase('https://articleserver.firebaseio.com/' + TeamName + item.path);
@@ -82,7 +88,7 @@ function connect() {
       console.log( "Listening on " + server_ip_address + ", server_port " + server_port )
     });
 
-    async.eachLimit(TeamList, 5, function(team, callback){
+    async.eachLimit(TeamList, 1, function(team, callback){
         setTimeout(function(){
         connectStream(team);
         callback();
