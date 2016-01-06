@@ -5,7 +5,7 @@ var async = require('async');
 var EventSource = require('eventsource');
 var express = require('express');
 var app = express();
-var myFirebaseRef = new Firebase('https://articleserver.firebaseio.com/');
+var myFirebaseRef = new Firebase(protected);
 var teamName = null;
 var eventSource = null;
 var streamdata = null;
@@ -15,8 +15,8 @@ var streamtoken = null;
 
 function connectStream(TeamItem, callback) {
    
-    streamdata = "https://streamdata.motwin.net/http://www.faroo.com/api?q=";
-    streamtoken = "&start=1&length=10&l=en&src=news&f=json&key=gbnEDrs@HPpVdWyQSAjQd6OVhqY_&X-Sd-Token=NDUzOTNjN2ItNDFlNy00MzBkLThmMGQtNzM2ZWFjYTNiZDkx";
+    streamdata = protected;
+    streamtoken = protected;
     //opens eventsource for current url
     var TeamName = TeamItem.Name;
     var link = streamdata + TeamItem.Team + streamtoken;
@@ -39,7 +39,7 @@ function connectStream(TeamItem, callback) {
         
  
         //set firebase node as the query sent to api
-        var myFirebaseRef = new Firebase('https://articleserver.firebaseio.com/' + TeamName);
+        var myFirebaseRef = new Firebase(protected + TeamName);
         //set initial data with returned api data
         myFirebaseRef.set(teamArray);
         
@@ -50,7 +50,7 @@ function connectStream(TeamItem, callback) {
          item = item[0];
         
         if (item.op == "add") {
-            var myFirebaseRef = new Firebase('https://articleserver.firebaseio.com/' + TeamName + "/results");
+            var myFirebaseRef = new Firebase(protected + TeamName + "/results");
             //push update to database
             item.value.timeStamp = Firebase.ServerValue.TIMESTAMP;
             myFirebaseRef.push(item.value);
@@ -73,7 +73,7 @@ function connectStream(TeamItem, callback) {
 function connect() {
     
         //set eventsource url connection
-    var URL = 'https://streamdata.motwin.net/http://www.faroo.com/api?q=Atlanta%20Hawks%20&start=1&length=10&l=en&src=news&f=json&key=gbnEDrs@HPpVdWyQSAjQd6OVhqY_&X-Sd-Token=NDUzOTNjN2ItNDFlNy00MzBkLThmMGQtNzM2ZWFjYTNiZDkx';
+    var URL = protected;
     
     var TeamList = [{"Team": "Atlanta%20Hawks", "info": {}, "Name": "Atlanta Hawks"}, {"Team": "Boston%20Celtics", "info": {}, "Name":"Boston Celtics"}, {"Team": "Brooklyn%20Nets", "info": {}, "Name":"Brooklyn Nets"}, {"Team": "Charlotte%20Hornets", "info": {}, "Name":"Charlotte Hornets"}, {"Team": "Chicago%20Bulls", "info": {}, "Name":"Chicago Bulls"}, {"Team": "Cleveland%20Cavaliers", "info": {}, "Name":"Cleveland Cavaliers"}, {"Team": "Dallas%20Mavericks", "info": {}, "Name":"Dallas Mavericks"}, {"Team": "Denver%20Nuggets", "info": {}, "Name":"Denver Nuggets"}, {"Team": "Detroit%20Pistons", "info": {}, "Name":"Detroit Pistons"}, {"Team": "Golden%20State%20Warriors", "info": {}, "Name":"Golden State Warriors"}, {"Team": "Houston%20Rockets", "info": {}, "Name":"Houston Rockets"}, {"Team": "Indiana%20Pacers", "info": {}, "Name":"Indiana Pacers"}, {"Team": "LA%20Clippers", "info": {}, "Name":"LA Clippers"}, {"Team": "LA%20Lakers", "info": {}, "Name":"LA Lakers"}, {"Team": "Memphis%20Grizzlies", "info": {}, "Name":"Memphis Grizzlies"}, {"Team": "Miami%20Heat", "info": {}, "Name":"Miami Heat"}, {"Team": "Milwaukee%20Bucks", "info": {}, "Name":"Milwaukee Bucks"}, {"Team": "Minnesota%20Timberwolves", "info": {}, "Name":"Minnesota Timberwolves"}, {"Team": "New%20Orleans%20Pelicans", "info": {}, "Name":"New Orleans Pelicans"}, {"Team": "New%20York%20Knicks", "info": {}, "Name":"New York Knicks"}, {"Team": "Oklahoma%20City%20Thunder", "info": {}, "Name":"Oklahoma City Thunder"}, {"Team": "Orlando%20Magic", "info": {}, "Name":"Orlando Magic"}, {"Team": "Philadelphia%2076ers", "info": {}, "Name":"Philadelphia Sixers"}, {"Team": "Phoenix%20Suns", "info": {}, "Name":"Phoenix Suns"}, {"Team": "Portland%20Trail%20Blazers", "info": {}, "Name":"Portland Trail Blazers"}, {"Team": "Sacramento%20Kings", "info": {}, "Name":"Sacramento Kings"}, {"Team": "San%20Antonio%20Spurs", "info": {}, "Name":"San Antonio Spurs"}, {"Team": "Toronto%20Raptors", "info": {}, "Name":"Toronto Raptors"}, {"Team": "Utah%20Jazz", "info": {}, "Name":"Utah Jazz"}, {"Team": "Washington%20Wizards", "info": {}, "Name":"Washington Wizards"}];
     
